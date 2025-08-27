@@ -1,0 +1,34 @@
+networks:
+  smart-expense-net:
+    external: true
+
+services:
+  mongo:
+    image: mongo:6.0
+    container_name: mongo_db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=rootpassword
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - smart-expense-net
+
+
+
+  forecasts-insights-reports-service:
+    build: .
+    container_name: forecasts-insights-reports-service
+    ports:
+      - "8085:8085"
+    environment:
+      - SERVER_PORT=8085
+      - TRANSACTION_SERVICE_URL=http://transaction-service:8083
+      - SPRING_DATA_MONGODB_URI=mongodb://root:rootpassword@mongo:27017/smart_expense_db?authSource=admin
+    networks:
+      - smart-expense-net
+    depends_on:
+      - mongo
+
+volumes:
+  mongo_data:
