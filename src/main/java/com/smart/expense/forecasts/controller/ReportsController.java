@@ -57,7 +57,9 @@ public class ReportsController {
     public ResponseEntity<Map<String, List<Insight>>> getInsights(Authentication authentication){
         // TODO: get userId from JWT
         //String userId = "alice";
-        String userId = authentication.getName();
+        // String userId = authentication.getName();
+
+        String userId = "test-user-no-auth";
 
         List<Insight> insights = insightRepository.findByUserId(userId);
 
