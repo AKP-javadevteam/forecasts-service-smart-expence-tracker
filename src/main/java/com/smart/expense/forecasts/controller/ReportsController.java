@@ -39,7 +39,11 @@ public class ReportsController {
     public ResponseEntity<ReportSummaryDTO> getReportSummary(@RequestParam String month, Authentication authentication){
         // todo: in the reall app, get the userId from the JWT gtoken in the authorization header
         //String userId = "alice"; // Hardocded for now
-        String userId = authentication.getName();
+        String userId ="test-user-no-auth";
+
+        if (authentication!= null){
+            userId = authentication.getName();
+        }
 
         // 1. Call the transaction service
         TransactionResponseDTO transactionData = transactionServiceClient.getTransactionsForUser(userId, month);
